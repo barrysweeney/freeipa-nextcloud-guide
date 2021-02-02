@@ -62,6 +62,12 @@
         host. Open a new terminal and run
       </p>
       <div class="bash">sudo mkdir /var/lib/ipa-data</div>
+      <p>We'll also add the following entry to /etc/hosts</p>
+      <div class="bash">127.0.0.1 &nbsp;&nbsp; ipa.example.test ipa-server</div>
+      <p>by runnning</p>
+      <div class="bash">
+          sudo nano /etc/hosts
+      </div>
       <p>
         We'll then run the Free-IPA container with the following command (note
         some options are optional as explained below):
@@ -101,7 +107,19 @@
           <img src="/static/images/freeipa-login.png" alt="Screenshot of FreeIPA login page">  
           <p>You can now enter your admin password enterred in the Docker run command (Secret123 in our case) to access the identity management interface.</p>  
     </div>
-    <div class="nextcloud-setup"></div>
+    <div class="nextcloud-setup">
+        <h2>NextCloud Setup</h2>
+        <p>To setup NextCloud we'll run</p>
+        <div class="bash">
+            sudo docker run --name my-nextcloud-container -p 9000:80 nextcloud
+        </div>
+        <p>We map port 80 of the container to port 9000 of our development machine since FreeIPA is already using our local port 80.</p>
+        <p>We can now access the NextCloud dashboard at <a href="http://localhost:9000">http://localhost:9000</a></p>
+        <img src="/static/images/nextcloud-login.png" alt="Screenshot of NextCloud login page">
+    </div>
+    <div class="ldap-integration">
+        <h2>NextCloud-FreeIPA LDAP integration</h2>
+    </div>
 </div>
   </body>
 </html>

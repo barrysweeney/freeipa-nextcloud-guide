@@ -126,6 +126,12 @@
     <p>You can access the LDAP configuration panel via the settings under LDAP/AD integration</p>
     <img src="/static/images/settings.png" alt="NextCloud dropdown menu showing Settings option highlighted">
     <img src="/static/images/ldap-ad.png" alt="NextCloud settings menu showing LDAP/AD inegration highlighted">
+    <p>We can gather some LDAP configuration details from the FreeIPA container:</p>
+    <div class="bash">
+      sudo docker exec my-freeipa-server ldapsearch -x uid admin
+    </div>
+    <img src="/static/images/ldapsearch.png" alt="Results in temrninal of running sudo docker exec my-freeipa-server ldapsearch -x uid admin">
+    We'll copy &quot;uid=admin,cn=users,cn=accounts,dc=example,dc=test&quot; as we'll need that for the User DN in NextCloud.
     <p>We'll now populate the server tab with configuration details, using Secret123 for the password</p>
     <img src="/static/images/server.png" alt="Host is 172.17.0.1 Port is 80
     User DN is uid=admin,cn=users,cn=accounts,dc=example,dc=test

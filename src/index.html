@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>NextCloud-FreeIPA Docker Integration</title>
+  </head>
+  <body>
+    <div class="main-wrapper">
+      <header>
+        <h1>NextCloud LDAP integration using FreeIPA and Docker</h1>
+      </header>
+      <figure>
+        <img
+          src="/static/images/wireframe.jpg"
+          alt="Hand's drawing a wireframe diagram"
+        />
+        <figcaption>
+          <span
+            >Photo by
+            <a
+              href="https://unsplash.com/@kellysikkema?utm_source=unsplash&amp;utm_medium=referral&amp;utm_content=creditCopyText"
+              >Kelly Sikkema</a
+            >
+            on
+            <a
+              href="https://unsplash.com/s/photos/user?utm_source=unsplash&amp;utm_medium=referral&amp;utm_content=creditCopyText"
+              >Unsplash</a
+            ></span
+          >
+        </figcaption>
+      </figure>
+      <div class="introduction">
+        <h2>Introduction</h2>
+        <p>
+          In this tutorial you will learn how to run NextCloud and FreeIPA in
+          seperate Docker containers and integrate them to enable a user saved
+          in FreeIPA to log into NextCloud with the same credentials.
+        </p>
+      </div>
+    </div>
+    <div class="video-tutorial">
+      <h2>Video Tutorial</h2>
+      <iframe
+        width="420"
+        height="315"
+        src="https://www.youtube.com/embed/tgbNymZ7vqY"
+      >
+      </iframe>
+    </div>
+    <div class="install-docker">
+      <h2>Install Docker</h2>
+      Rather than re-invent the wheel I'll point you to this guide to
+      <a href="https://docs.docker.com/engine/install/ubuntu/"
+        >Install Docker Engine on Ubuntu</a
+      >.
+    </div>
+    <div class="freeipa-setup">
+      <h2>FreeIPA Setup</h2>
+      <p>
+        First we'll create the directory which will store server data on the
+        host. Open a new terminal and run
+      </p>
+      <div class="bash">sudo mkdir /var/lib/ipa-data</div>
+      <p>
+        We'll then run the Free-IPA container with the following command (note
+        some options are optional as explained below):
+      </p>
+      <div class="bash">
+        sudo docker run -d -h ipa.example.test --name my-freeipa-server -p 80:80
+        -p 443:443 -p 389:389 -v /sys/fs/cgroup:/sys/fs/cgroup:ro -v
+        /var/lib/ipa-data:/data:Z -e PASSWORD=Secret123 --sysctl
+        net.ipv6.conf.all.disable_ipv6=0 freeipa/freeipa-server:centos-8-4.8.7
+        ipa-server-install -U -r EXAMPLE.TEST --no-ntp
+      </div>
+      <p>Let's run through each command in turn:</p>
+      <dl>
+          <dt>-d</dt>
+          <dd>Optional. Runs the container in detached mode, allowing you to continue using this terminal.</dd>
+          <dt>-h ipa.example.test</dt>
+          <dd>Sets the hostname.</dd>
+          <dt>--name my-freeipa-server</dt>
+          <dd>Optional. Sets the container name to be used for Docker inspections etc.</dd>
+          <dt>-p 80:80 -p 443:443 -p 389:389</dt>
+          <dd>Maps ports in the contianer to ports on the host machine.</dd>
+          <dt>-v /sys/fs/cgroup:/sys/fs/cgroup:ro</dt>
+          <dd>May not be necessary depending on Docker version.</dd>
+          <dt>-v /var/lib/ipa-data:/data:Z</dt>
+          <dd>Configuration and data on volume mounted to /data directory in the container.</dd>
+          <dt>-e PASSWORD=Secret123</dt>
+          <dd>This will be the admin password.</dd>
+          <dt>--sysctl net.ipv6.conf.all.disable_ipv6=0</dt>
+          <dd>May not be neccessary. Add if you receive an error like &quot;IPv6 stack is enabled in the kernel but there is no interface that
+            has ::1 address assigned&quot;</dd>
+            <dt>freeipa/freeipa-server:centos-8-4.8.7</dt>
+            <dd>FreeIPA image to pull from DockerHub. The tag can be changed depending on which version you want to use.</dd>
+            <dt>ipa-server-install -U -r EXAMPLE.TEST --no-ntp</dt>
+            <dd>FreeIPA specific install commands.</dd>
+      </ul>
+      <p>We can now access the FreeIPA web interface at <a href="https://ipa.example.test/ipa/ui/">https://ipa.example.test/ipa/ui/</a></p>
+          <img src="/static/images/freeipa-login.png" alt="Screenshot of FreeIPA login page">  
+          <p>You can now enter your admin password enterred in the Docker run command (Secret123 in our case) to access the identity management interface.</p>  
+    </div>
+    <div class="nextcloud-setup"></div>
+</div>
+  </body>
+</html>

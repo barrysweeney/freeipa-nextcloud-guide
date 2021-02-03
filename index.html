@@ -45,21 +45,43 @@
           in FreeIPA to log into NextCloud with the same credentials.
         </p>
       </div>
-    <div class="video-tutorial">
-      <h2>Video Tutorial</h2>
-      <iframe
-        width="90%"
-        height="300px"
-        src="https://www.youtube.com/embed/tgbNymZ7vqY"
-      >
-      </iframe>
-    </div>
+      <div class="embed-responsive embed-responsive-16by9 video-tutorial">
+        <iframe class="embed-responsive-item" src="https://www.youtube.com/embed/zpOULjyy-n8?rel=0" allowfullscreen></iframe>
+      </div>
     <div class="install-docker">
       <h2>Install Docker</h2>
-      Rather than re-invent the wheel I'll point you to this guide to
-      <a href="https://docs.docker.com/engine/install/ubuntu/"
-        >Install Docker Engine on Ubuntu</a
-      >.
+      <p> This guide includes installing Docker engine on Ubuntu. For other operating systems, Linux platforms, and alternative install methods I'll point you to these guides to</p>
+      <ul>
+        <li><a href="https://docs.docker.com/engine/install/"
+        >Install Docker Engine on Linux</a
+      ></li>
+      <li><a href="https://docs.docker.com/docker-for-mac/install/"
+        >Install Docker Desktop on MAC</a
+      ></li>
+      <li><a href="https://docs.docker.com/docker-for-windows/install/"
+        >Install Docker Desktop on Windows</a
+      ></li>
+      </ul>
+      <p>To install Docker on Ubunut first uninstall older versions of Docker with the following command:</p>
+      <div class="bash">
+        sudo apt-get remove docker docker-engine docker.io containerd runc
+      </div>
+      <p>Next set up the Docker repository:</p>
+      <div class="bash">sudo apt-get update</div>
+      <div class="bash">sudo apt-get install \
+        apt-transport-https \
+        ca-certificates \
+        curl \
+        gnupg-agent \
+        software-properties-common</div>
+        <div class="bash">curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -</div>
+        <p>We can now install the latest version of Docker Engine and containerd</p>
+        <div class="bash">sudo add-apt-repository \
+          "deb [arch=amd64] https://download.docker.com/linux/ubuntu \
+          $(lsb_release -cs) \
+          stable"</div>
+          <div class="bash">sudo apt-get update</div>
+          <div class="bash">sudo apt-get install docker-ce docker-ce-cli containerd.io</div>
     </div>
     <div class="freeipa-setup">
       <h2>FreeIPA Setup</h2>
@@ -109,9 +131,9 @@
       <div class="bash">
         echo $SERVER_IP_ADDRESS ipa.example.test >> /etc/hosts
       </div>
-      
+    
       <p>Alternatively, you can edit /etc/hosts manually by running</p>
-      <dic class="bash">sudo nano /etc/hosts</dic>
+      <div class="bash">sudo nano /etc/hosts</div>
       <div class="bash">127.0.0.1 &nbsp;&nbsp; ipa.example.test ipa-server</div>
       <p>Replacing 127.0.0.1 with the IP address of your host machine.</p>
      
@@ -133,10 +155,10 @@
         <h2>NextCloud-FreeIPA LDAP integration</h2>
     <p>When you have created an admin account as you first log in to NextCloud you can then enable LDAP by going to the apps page and enabling &quot;LDAP user and group backend&quot;</p>
     <img class="img-fluid" src="/images/apps.png" alt="NextCloud dropdown menu showing Apps option highlighted">
-    <img class="img-fluid" src="/images/ldap-enable.png" alt="NextCloud option to enable LDAP user and group backend">
+    <img class="img-fluid bordered" src="/images/ldap-enable.png" alt="NextCloud option to enable LDAP user and group backend">
     <p>You can access the LDAP configuration panel via the settings under LDAP/AD integration</p>
-    <img class="img-fluid" src="/images/settings.png" alt="NextCloud dropdown menu showing Settings option highlighted">
-    <img class="img-fluid" src="/images/ldap-ad.png" alt="NextCloud settings menu showing LDAP/AD inegration highlighted">
+    <img class="img-fluid bordered" src="/images/settings.png" alt="NextCloud dropdown menu showing Settings option highlighted">
+    <img class="img-fluid bordered" src="/images/ldap-ad.png" alt="NextCloud settings menu showing LDAP/AD inegration highlighted">
     <p>We can gather some LDAP configuration details from the FreeIPA container:</p>
     <div class="bash">
       sudo docker exec my-freeipa-server ldapsearch -x uid admin
@@ -144,18 +166,19 @@
     <img class="img-fluid" src="/images/ldapsearch.png" alt="Results in temrninal of running sudo docker exec my-freeipa-server ldapsearch -x uid admin">
     <p>We'll copy "uid=admin,cn=users,cn=accounts, dc=example,dc=test" as we'll need that for the User DN in NextCloud.</p>
     <p>We'll now populate the server tab with configuration details, using Secret123 for the password</p>
-    <img class="img-fluid" src="/images/server.png" alt="Host is 172.17.0.1 Port is 80
+    <img class="img-fluid bordered" src="/images/server.png" alt="Host is 172.17.0.1 Port is 80
     User DN is uid=admin,cn=users,cn=accounts,dc=example,dc=test
     Password is Secret123
     Base DN is dc=example,dc=test">
+    <p>The address 172.17.0.1 can be replaced with host.docker.internal on Windows and MacOS</p>
     <p>On the Users tab we'll edit the LDAP query to (|(objectclass=*))</p>
-    <img class="img-fluid" src="/images/users-tab.png" alt="LDAP query is (|(objectclass=*))">
+    <img class="img-fluid bordered" src="/images/users-tab.png" alt="LDAP query is (|(objectclass=*))">
     <p>On the Login Attributes tab we'll edit the LDAP query to (&(|(objectclass=*))(uid=%uid))</p>
-    <img class="img-fluid" src="/images/login-tab.png" alt="LDAP query is (&(|(objectclass=*))(uid=%uid))">
+    <img class="img-fluid bordered" src="/images/login-tab.png" alt="LDAP query is (&(|(objectclass=*))(uid=%uid))">
     <p>On the Groups tab we'll edit the LDAP query to (|(cn=ipausers))</p>
-    <img class="img-fluid" src="/images/groups-tab.png" alt="LDAP query is (|(cn=ipausers))">
+    <img class="img-fluid bordered" src="/images/groups-tab.png" alt="LDAP query is (|(cn=ipausers))">
   <p>Next, we'll go to the Advanced tab and ensure the Configuration Active box is checked</p>
-  <img class="img-fluid" src="/images/connection-settings.png" alt="Checked Configuration Active box">
+  <img class="img-fluid bordered" src="/images/connection-settings.png" alt="Checked Configuration Active box">
   <p>Under directory settings we'll set Base User Tree to
     cn=users,cn=accounts,dc=example,dc=test</p>
     And we'll set Base Group Tree to cn=groups,cn=accounts,dc=example,dc=test</p>
@@ -163,9 +186,9 @@
     <img class="img-fluid" src="/images/directory-settings.png" alt="Direcotry Settings tab showing Base User Tree as
     cn=users,cn=accounts,dc=example,dc=test and Base Group Tree as cn=groups,cn=accounts,dc=example,dc=test and Group-Member association set to uniqueMember">
     <p>In the Special Attributes section we'll set the Email Field to mail and User Home Folder Naming Rule to cn</p>
-    <img class="img-fluid" src="/images/special-attributes.png" alt="Special Attributes tab showing Email Field set to mail and User Home Folder Naming Rule set to cn">
+    <img class="img-fluid bordered" src="/images/special-attributes.png" alt="Special Attributes tab showing Email Field set to mail and User Home Folder Naming Rule set to cn">
     <p>You should now see the Configuration OK message</p>
-    <img class="img-fluid" src="/images/configuration-ok.png" alt="Configuration OK message">
+    <img class="img-fluid bordered" src="/images/configuration-ok.png" alt="Configuration OK message">
     <p>Users can now log into NextCloud using their credentials stored in FreeIPA. You can test this by adding a new user to FreeIPA or logging into NextCloud with your FreeIPA admin credentials (username: admin, password: Secret123).</p>
     <img class="img-fluid" src="/images/adminlogin.png" alt="NextCloud message showing Good Afternoon, Administrator">
   </div>

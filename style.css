@@ -1,4 +1,18 @@
 .bash {
+  padding: 5px;
   background: black;
   color: green;
+}
+
+.bordered {
+  border: 2px solid black;
+}
+
+img {
+  padding: 2px;
+  margin: 15px 0;
+}
+
+p {
+  margin: 8px 0;
 }

@@ -13,6 +13,11 @@ img {
   margin: 15px 0;
 }
 
-p {
+p,
+h2 {
   margin: 8px 0;
+}
+
+li {
+  margin-top: 10px;
 }

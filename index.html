@@ -52,17 +52,17 @@
       <h2>Install Docker</h2>
       <p> This guide includes installing Docker engine on Ubuntu. For other operating systems, Linux platforms, and alternative install methods I'll point you to these guides to</p>
       <ul>
-        <li><a href="https://docs.docker.com/engine/install/"
+        <li><a target="_blank" href="https://docs.docker.com/engine/install/"
         >Install Docker Engine on Linux</a
       ></li>
-      <li><a href="https://docs.docker.com/docker-for-mac/install/"
+      <li><a target="_blank" href="https://docs.docker.com/docker-for-mac/install/"
         >Install Docker Desktop on MAC</a
       ></li>
-      <li><a href="https://docs.docker.com/docker-for-windows/install/"
+      <li><a target="_blank" href="https://docs.docker.com/docker-for-windows/install/"
         >Install Docker Desktop on Windows</a
       ></li>
       </ul>
-      <p>To install Docker on Ubunut first uninstall older versions of Docker with the following command:</p>
+      <p>To install Docker on Ubuntu, first uninstall older versions of Docker with the following command:</p>
       <div class="bash">
         sudo apt-get remove docker docker-engine docker.io containerd runc
       </div>
@@ -84,7 +84,7 @@
           <div class="bash">sudo apt-get install docker-ce docker-ce-cli containerd.io</div>
     </div>
     <div class="freeipa-setup">
-      <h2>FreeIPA Setup</h2>
+      <h2>FreeIPA setup</h2>
       <p>
         First we'll create the directory which will store server data on the
         host. Open a new terminal and run
@@ -124,7 +124,7 @@
             <dd>FreeIPA image to pull from DockerHub. The tag can be changed depending on which version you want to use.</dd>
             <dt>ipa-server-install -U -r EXAMPLE.TEST --no-ntp</dt>
             <dd>FreeIPA specific install commands.</dd>
-      <p><a href="https://www.freeipa.org/page/Docker">FreeIPA's Docker page</a> provides the following commands to enroll the host to the FreeIPA server running in the container. </p>
+      <p><a target="_blank" href="https://www.freeipa.org/page/Docker">FreeIPA's Docker page</a> provides the following commands to enroll the host to the FreeIPA server running in the container. </p>
       <div class="bash">
         SERVER_IP_ADDRESS=$( docker inspect --format '{{ .NetworkSettings.IPAddress }}' my-freeipa-server)
       </div>
@@ -134,21 +134,22 @@
     
       <p>Alternatively, you can edit /etc/hosts manually by running</p>
       <div class="bash">sudo nano /etc/hosts</div>
-      <div class="bash">127.0.0.1 &nbsp;&nbsp; ipa.example.test ipa-server</div>
+      <p>And adding the line</p>
+      <div class="bash">127.0.0.1 &nbsp;&nbsp; ipa.example.test &nbsp; ipa-server</div>
       <p>Replacing 127.0.0.1 with the IP address of your host machine.</p>
      
-      <p>We can now access the FreeIPA web interface at <a href="https://ipa.example.test/ipa/ui/">https://ipa.example.test/ipa/ui/</a></p>
+      <p>We can now access the FreeIPA web interface at <a target="_blank" href="https://ipa.example.test/ipa/ui/">https://ipa.example.test/ipa/ui/</a></p>
           <img class="img-fluid" src="/images/freeipa-login.png" alt="Screenshot of FreeIPA login page">  
           <p>You can now enter your admin password enterred in the Docker run command (Secret123 in our case) to access the identity management interface.</p>  
     </div>
     <div class="nextcloud-setup">
-        <h2>NextCloud Setup</h2>
+        <h2>NextCloud setup</h2>
         <p>To setup NextCloud we'll run</p>
         <div class="bash">
             sudo docker run --name my-nextcloud-container -p 9000:80 nextcloud
         </div>
         <p>We map port 80 of the container to port 9000 of our development machine since FreeIPA is already using our local port 80.</p>
-        <p>We can now access the NextCloud dashboard at <a href="http://localhost:9000">http://localhost:9000</a></p>
+        <p>We can now access the NextCloud dashboard at <a target="_blank" href="http://localhost:9000">http://localhost:9000</a></p>
         <img class="img-fluid" src="/images/nextcloud-login.png" alt="Screenshot of NextCloud login page">
     </div>
     <div class="ldap-integration">
@@ -170,7 +171,7 @@
     User DN is uid=admin,cn=users,cn=accounts,dc=example,dc=test
     Password is Secret123
     Base DN is dc=example,dc=test">
-    <p>The address 172.17.0.1 can be replaced with host.docker.internal on Windows and MacOS</p>
+    <p>The address 172.17.0.1 can be replaced with host.docker.internal on Windows and MacOS as explained in <a target="_blank" href="https://stackoverflow.com/questions/48546124/what-is-linux-equivalent-of-host-docker-internal">this StackOverflow discussion</a>.</p>
     <p>On the Users tab we'll edit the LDAP query to (|(objectclass=*))</p>
     <img class="img-fluid bordered" src="/images/users-tab.png" alt="LDAP query is (|(objectclass=*))">
     <p>On the Login Attributes tab we'll edit the LDAP query to (&(|(objectclass=*))(uid=%uid))</p>
@@ -191,6 +192,51 @@
     <img class="img-fluid bordered" src="/images/configuration-ok.png" alt="Configuration OK message">
     <p>Users can now log into NextCloud using their credentials stored in FreeIPA. You can test this by adding a new user to FreeIPA or logging into NextCloud with your FreeIPA admin credentials (username: admin, password: Secret123).</p>
     <img class="img-fluid" src="/images/adminlogin.png" alt="NextCloud message showing Good Afternoon, Administrator">
+  </div>
+  <div class="issues">
+    <h2>Possible Issues</h2>
+    <p>I ran into a few issues which I'll list here with possible solutions and/or workarounds.</p>
+    <h3>Can't connect to server</h3>
+    <img class="img-fluid bordered" alt="Firefox error page that says: We’re having trouble finding that site." src="/images/trouble-finding-site.png">
+    <ul>
+      <li>Ensure there is an entry in /etc/hosts/ in the format
+        <div class="bash">host-ip &nbsp;&nbsp; ipa.example.test &nbsp; ipa-server</div>
+        <p>For example</p>
+        <div class="bash">127.0.0.1 &nbsp;&nbsp; ipa.browse.test &nbsp; ipa-server</div>
+      </li>
+      <li>Ensure you have https instead of http in the address.</li>
+      <li>Ensure the URL is correct, for example www.ipa.browse.test/ipa/ui is incorrect and should just be ipa.browse.test/ipa/ui</li>
+    </ul>
+    <h3>Container naming conflict</h3>
+    <div class="bash">
+      docker: Error response from daemon: Conflict. The container name "/my-freeipa-container" is already in use...
+    </div>
+    <p>Either of the following two options should work</p>
+    <ul>
+      <li>Change the name of your container in your Docker run command</li>
+      <li>Run
+        <div class="bash">sudo docker rm -f my-freeipa-container</div>
+      </li>
+    </ul>
+    <h3>SEC_ERROR_REUSED_ISSUER_AND_SERIAL</h3>
+    <img class="img-fluid bordered" src="/images/secure-connection-failed.png" alt="Firefox error page showing the message secure connection failed with the error code: SEC_ERROR_REUSED_ISSUER_AND_SERIAL">
+    <p>This error occurs when the ipa-install command is run with the same arguments twice. This can occur if you have removed /var/lib/ipa-data</p>
+    <ul>
+      <li>Change the organisation name in the Docker run command and ipa-install arguments.
+        <div class="bash">docker run ... ipa.example.test ... -r EXAMPLE.TEST</div>
+        To:
+        <div class="bash">docker run ... ipa.secure.test ... -r SECURE.TEST</div>
+      </li>
+    </ul>
+    <h3>PR_END_OF_FILE_ERROR</h3>
+    <img class="img-fluid bordered" src="/images/eof.png" alt="Firefox error page with the message secure connection failed and the error code: PR_END_OF_FILE_ERROR">
+    <p>This happens when you have updated /etc/hosts and your Docker run commands correctly but have not deleted the old configuration information in /var/lib/ipa-data</p>
+    <ul>
+      <li>Run 
+        <div class="bash">sudo rm -rf /var/lib/ipa-data</div>
+        And restart your container
+      </li>
+    </ul>
   </div>
 </div>
   </body>

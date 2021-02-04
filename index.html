@@ -37,7 +37,7 @@
           >
         </figcaption>
       </figure>
-      <div class="introduction">
+      <div id="introduction">
         <h2>Introduction</h2>
         <p>
           In this tutorial you will learn how to run NextCloud and FreeIPA in
@@ -45,10 +45,22 @@
           in FreeIPA to log into NextCloud with the same credentials.
         </p>
       </div>
+      <div id="video-tutorial">
+        <h2>Video Tutorial</h2>
       <div class="embed-responsive embed-responsive-16by9 video-tutorial">
         <iframe class="embed-responsive-item" src="https://www.youtube.com/embed/iiGJq8bLqzU" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+      </div></div>
+      <div id="contents">
+        <h2>Contents</h2>
+        <ul>
+          <li><a href="#install-docker">Install Docker</a></li>
+          <li><a href="#freeipa-setup">FreeIPA setup</a></li>
+          <li><a href="#nextcloud-setup">NextCloud setup</a></li>
+          <li><a href="#ldap-integration">LDAP Integration</a></li>
+          <li><a href="#issues">Possible Issues</a></li>
+        </ul>
       </div>
-    <div class="install-docker">
+    <div id="install-docker">
       <h2>Install Docker</h2>
       <p> This guide includes installing Docker engine on Ubuntu. For other operating systems, Linux platforms, and alternative install methods I'll point you to these guides to</p>
       <ul>
@@ -83,7 +95,7 @@
           <div class="bash">sudo apt-get update</div>
           <div class="bash">sudo apt-get install docker-ce docker-ce-cli containerd.io</div>
     </div>
-    <div class="freeipa-setup">
+    <div id="freeipa-setup">
       <h2>FreeIPA setup</h2>
       <p>
         First we'll create the directory which will store server data on the
@@ -152,7 +164,7 @@
         <p>We can now access the NextCloud dashboard at <a target="_blank" href="http://localhost:9000">http://localhost:9000</a></p>
         <img class="img-fluid" src="/images/nextcloud-login.png" alt="Screenshot of NextCloud login page">
     </div>
-    <div class="ldap-integration">
+    <div id="ldap-integration">
         <h2>NextCloud-FreeIPA LDAP integration</h2>
     <p>When you have created an admin account as you first log in to NextCloud you can then enable LDAP by going to the apps page and enabling &quot;LDAP user and group backend&quot;</p>
     <img class="img-fluid" src="/images/apps.png" alt="NextCloud dropdown menu showing Apps option highlighted">
@@ -193,7 +205,7 @@
     <p>Users can now log into NextCloud using their credentials stored in FreeIPA. You can test this by adding a new user to FreeIPA or logging into NextCloud with your FreeIPA admin credentials (username: admin, password: Secret123).</p>
     <img class="img-fluid" src="/images/adminlogin.png" alt="NextCloud message showing Good Afternoon, Administrator">
   </div>
-  <div class="issues">
+  <div id="issues">
     <h2>Possible Issues</h2>
     <p>I ran into a few issues which I'll list here with possible solutions and/or workarounds.</p>
     <h3>Can't connect to server</h3>

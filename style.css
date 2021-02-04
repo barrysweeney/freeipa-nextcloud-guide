@@ -21,3 +21,7 @@ h2 {
 li {
   margin-top: 10px;
 }
+
+footer > ul {
+  list-style-type: none;
+}

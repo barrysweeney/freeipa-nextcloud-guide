@@ -10,6 +10,8 @@
     integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk"
     crossorigin="anonymous"
   />
+  <link rel="shortcut icon" type="image/png" href="/images/bs-logo.png" />
+
     <link rel="stylesheet" href="style.css" />
   </head>
   <body>
@@ -230,7 +232,7 @@
         <div class="bash">sudo docker rm -f my-freeipa-container</div>
       </li>
     </ul>
-    <h3>SEC_ERROR_REUSED_ISSUER_AND_SERIAL</h3>
+    <h3>SEC_ERROR_REUSED_ ISSUER_AND_SERIAL</h3>
     <img class="img-fluid bordered" src="/images/secure-connection-failed.png" alt="Firefox error page showing the message secure connection failed with the error code: SEC_ERROR_REUSED_ISSUER_AND_SERIAL">
     <p>This error occurs when the ipa-install command is run with the same arguments twice. This can occur if you have removed /var/lib/ipa-data</p>
     <ul>
@@ -240,7 +242,7 @@
         <div class="bash">docker run ... ipa.secure.test ... -r SECURE.TEST</div>
       </li>
     </ul>
-    <h3>PR_END_OF_FILE_ERROR</h3>
+    <h3>PR_END_OF_FILE_ ERROR</h3>
     <img class="img-fluid bordered" src="/images/eof.png" alt="Firefox error page with the message secure connection failed and the error code: PR_END_OF_FILE_ERROR">
     <p>This happens when you have updated /etc/hosts and your Docker run commands correctly but have not deleted the old configuration information in /var/lib/ipa-data</p>
     <ul>
